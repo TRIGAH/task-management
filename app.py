@@ -31,8 +31,11 @@ def home():
         db.session.add(task)
         db.session.commit()
 
+    # Get all Tasks from Database
+    tasks = db.session.query(Task).all()    
 
-    return render_template('tasks.html',tasks=session['data'])
+
+    return render_template('tasks.html',tasks=tasks)
 
 
 if __name__=='__main__':
