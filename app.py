@@ -22,15 +22,15 @@ class Task(db.Model):
 
 @app.route('/',methods=['POST','GET'])
 def home():
-    #Create and empty list
-    session['data']=[]
 
-    # Get task name from Form
+
+    # Create Task and to Database
     if request.method == 'POST':
-        task = request.form.get('task')
+        task_name = request.form.get('task')
+        task = Task(name=task_name)
+        db.session.add(task)
+        db.session.commit()
 
-        # Add task to the List
-        session['data'].append(task)
 
     return render_template('tasks.html',tasks=session['data'])
 
