@@ -16,6 +16,7 @@ db = SQLAlchemy(app)
 class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(250), unique=True, nullable=False)
+    status = db.Column(db.Boolean,nullable=True)
 
 # Set up application context
 app_context = app.app_context()
@@ -28,20 +29,18 @@ app_context.pop()
 
 @app.route('/',methods=['POST','GET'])
 def home():
-
-
-    # Create Task and to Database
+    # Create Task and add to Database
     if request.method == 'POST':
         task_name = request.form.get('task')
-        task = Task(title=task_name)
+        task_status = request.form.get('status',False)
+        task = Task(title=task_name,status=task_status)
         db.session.add(task)
         db.session.commit()
 
     # Get all Tasks from Database
-    tasks = db.session.query(Task).all()    
+    tasks = db.session.query(Task).all()     
 
-
-    return render_template('tasks.html')
+    return render_template('tasks.html',tasks=tasks)
 
 
 if __name__=='__main__':

@@ -25,16 +25,11 @@
                         <div class="todo-list">
                             {% for task in tasks %}
                             <div class="todo-item">
-                                <div class="checker"><span class=""><input type="checkbox"></span></div>
+                                <div class="checker"><span class=""><input name="status" type="checkbox"></span></div>
                                 <span>{{ task.title }}</span>
                                 <a href="javascript:void(0);" class="float-right remove-todo-item"><i class="icon-close"></i></a>
                             </div>
                             {% endfor %}
-                            <div class="todo-item">
-                                <div class="checker"><span><input type="checkbox"></span></div>
-                                <span>Error solve in HTML template</span>
-                                <a href="javascript:void(0);" class="float-right remove-todo-item"><i class="icon-close"></i></a>
-                            </div>
                         </div>
                     </div>
                 </div>
