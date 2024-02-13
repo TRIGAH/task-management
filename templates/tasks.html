@@ -14,7 +14,7 @@
             <div class="col-md-12">
                 <div class="card card-white">
                     <div class="card-body">
-                        <form action="{{ url_for('home') }}" method="post">
+                        <form action="{{ url_for('add_task') }}" method="post">
                             <input type="text" name="task" class="form-control add-task" placeholder="New Task...">
                         </form>
                         <ul class="nav nav-pills todo-nav">
@@ -25,9 +25,17 @@
                         <div class="todo-list">
                             {% for task in tasks %}
                             <div class="todo-item">
-                                <div class="checker"><span class=""><input name="status" type="checkbox"></span></div>
-                                <span>{{ task.title }}</span>
-                                <a href="javascript:void(0);" class="float-right remove-todo-item"><i class="icon-close"></i></a>
+        
+                                <form id="taskForm{{ task.id }}" method="post">
+                                    <div class="checker">
+                                        <span class="">
+                                        <input type="checkbox" name="task_id" class="task-checkbox" value="{{ task.id }}" {% if task.completed %}checked{% endif %} onchange="submitForm('{{ task.id }}')">
+                                        </span>
+                                    </div>
+                                    <label>{{ task.title }}</label>
+
+                                </form>
+
                             </div>
                             {% endfor %}
                         </div>
@@ -36,5 +44,12 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function submitForm(taskId) {
+            document.getElementById('taskForm' + taskId).submit();
+        }
+    </script>
+
 </body>
 </html>

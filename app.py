@@ -1,4 +1,4 @@
-from flask import Flask,render_template,request,session
+from flask import Flask,render_template,request,session,jsonify,redirect,url_for
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime,timedelta
 
@@ -26,20 +26,25 @@ with app.app_context():
 app_context.pop()
 
 
-@app.route('/',methods=['POST','GET'])
+@app.route('/',methods=['GET','POST'])
 def home():
-    # Create Task and add to Database
+    # Get all Tasks from Database
+    tasks = db.session.query(Task).all()     
+    return render_template('tasks.html',tasks=tasks)
+
+@app.route('/add',methods=['POST'])
+def add_task():
+        # Create Task and add to Database
     if request.method == 'POST':
         task_name = request.form.get('task')
         task_status = request.form.get('status',False)
         task = Task(title=task_name,status=task_status)
         db.session.add(task)
         db.session.commit()
+        return redirect(url_for('home'))
+    
+    # return render_template('tasks.html')
 
-    # Get all Tasks from Database
-    tasks = db.session.query(Task).all()     
-
-    return render_template('tasks.html',tasks=tasks)
 
 
 @app.route('/active')
@@ -52,10 +57,45 @@ def task_complete():
     completed_tasks = db.session.query(Task).filter_by(status=True)
     return render_template('tasks.html',tasks=completed_tasks)
 
-@app.route('/status')
-def mark_status():
-    task_status = request.form.get('status',False)
-    if task_status == False
+
+
+# Route to display tasks and update them
+@app.route('/tasks', methods=['GET', 'POST'])
+def task_list():
+    if request.method == 'POST':
+        task_id = int(1)
+        tasks= db.session.query(Task).all()
+
+        for task in tasks:
+            if task.id == task_id:
+                task.status = True  # Update task as completed
+                break
+        return redirect(url_for('task_list'))
+
+    return render_template('tasks.html', tasks=tasks)
+
+
+# Route to update task status
+@app.route('/tasks/update', methods=['POST'])
+def update_task():
+    task_id = int(1)
+    tasks= db.session.query(Task).all()
+    for task in tasks:
+        if task.id == task_id:
+            task.status = True # Toggle task completion status
+            break
+    return jsonify({'message': 'Task updated successfully'})
+
+# @app.route('/status', methods = ['GET','PATCH'])
+# def mark_task(task_id):
+#     task_status = request.form.get('status',False)
+#     task = Task.query.get(task_id)
+#     if task:
+#         task.status = task_status
+#         db.session.commit()
+#         return jsonify(respose={"success":"Task Completed"})    
+#     else:
+#         return jsonify(error={"Not Found":"Sorry a Task with that id was not found in the database"}), 404
 
 
 
