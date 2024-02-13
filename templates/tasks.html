@@ -14,13 +14,13 @@
             <div class="col-md-12">
                 <div class="card card-white">
                     <div class="card-body">
-                        <form action="" method="post">
+                        <form action="{{ url_for('home') }}" method="post">
                             <input type="text" name="task" class="form-control add-task" placeholder="New Task...">
                         </form>
                         <ul class="nav nav-pills todo-nav">
-                            <li role="presentation" class="nav-item all-task active"><a href="#" class="nav-link">All</a></li>
-                            <li role="presentation" class="nav-item active-task"><a href="#" class="nav-link">Active</a></li>
-                            <li role="presentation" class="nav-item completed-task"><a href="#" class="nav-link">Completed</a></li>
+                            <li role="presentation" class="nav-item all-task active"><a href="{{ url_for('home') }}" class="nav-link">All</a></li>
+                            <li role="presentation" class="nav-item active-task"><a href="{{ url_for('task_active') }}" class="nav-link">Active</a></li>
+                            <li role="presentation" class="nav-item completed-task"><a href="{{ url_for('task_complete') }}" class="nav-link">Completed</a></li>
                         </ul>
                         <div class="todo-list">
                             {% for task in tasks %}

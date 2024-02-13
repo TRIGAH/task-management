@@ -11,7 +11,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
-
 ##Cafe TABLE Configuration
 class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -41,6 +40,23 @@ def home():
     tasks = db.session.query(Task).all()     
 
     return render_template('tasks.html',tasks=tasks)
+
+
+@app.route('/active')
+def task_active():
+    active_tasks = db.session.query(Task).filter_by(status=False)
+    return render_template('tasks.html',tasks=active_tasks)
+
+@app.route('/completed')
+def task_complete():
+    completed_tasks = db.session.query(Task).filter_by(status=True)
+    return render_template('tasks.html',tasks=completed_tasks)
+
+@app.route('/status')
+def mark_status():
+    task_status = request.form.get('status',False)
+    if task_status == False
+
 
 
 if __name__=='__main__':
