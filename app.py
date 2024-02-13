@@ -10,14 +10,20 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///tasks.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
-# db.create_all()
 
 
 ##Cafe TABLE Configuration
 class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(250), unique=True, nullable=False)
+    title = db.Column(db.String(250), unique=True, nullable=False)
 
+# Set up application context
+app_context = app.app_context()
+app_context.push()
+
+with app.app_context():
+    db.create_all()
+app_context.pop()
 
 
 @app.route('/',methods=['POST','GET'])
@@ -27,7 +33,7 @@ def home():
     # Create Task and to Database
     if request.method == 'POST':
         task_name = request.form.get('task')
-        task = Task(name=task_name)
+        task = Task(title=task_name)
         db.session.add(task)
         db.session.commit()
 
@@ -35,7 +41,7 @@ def home():
     tasks = db.session.query(Task).all()    
 
 
-    return render_template('tasks.html',tasks=tasks)
+    return render_template('tasks.html')
 
 
 if __name__=='__main__':
