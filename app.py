@@ -61,31 +61,32 @@ def task_complete():
 
 # Route to display tasks and update them
 @app.route('/tasks', methods=['GET', 'POST'])
-def task_list():
+def task_list(task_id):
     if request.method == 'POST':
-        task_id = int(1)
         tasks= db.session.query(Task).all()
 
         for task in tasks:
             if task.id == task_id:
+                print(f"------{task_id}......")
                 task.status = True  # Update task as completed
+                db.session.commit()
                 break
-        return redirect(url_for('task_list'))
+        return redirect(url_for('task_complete'))
 
     return render_template('tasks.html', tasks=tasks)
 
 
-# Route to update task status
-@app.route('/tasks/update', methods=['POST'])
-def update_task():
-    task_id = int(1)
-    tasks= db.session.query(Task).all()
-    for task in tasks:
-        if task.id == task_id:
-            print(task.id)
-            task.status = True # Toggle task completion status
-            break
-    return jsonify({'message': 'Task updated successfully'})
+# # Route to update task status
+# @app.route('/tasks/update', methods=['POST'])
+# def update_task():
+#     task_id = request.form.get('id')
+#     tasks= db.session.query(Task).all()
+#     for task in tasks:
+#         if task.id == task_id:
+#             print(task.id)
+#             task.status = True # Toggle task completion status
+#             break
+#     return redirect( url_for('task_complete'))
 
 
 if __name__=='__main__':
