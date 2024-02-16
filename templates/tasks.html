@@ -26,10 +26,10 @@
                             {% for task in tasks %}
                             <div class="todo-item">
         
-                                <form id="taskForm{{ task.id }}" method="post">
+                                <form action="{{ url_for('update_task')}}" id="taskForm{{ task.id }}" method="post">
                                     <div class="checker">
                                         <span class="">
-                                        <input type="checkbox" name="task_id" class="task-checkbox" value="{{ task.id }}" {% if task.completed %}checked{% endif %} onchange="submitForm('{{ task.id }}')">
+                                        <input type="checkbox" name="task_id" class="task-checkbox" value="{{ task.id }}" {% if task.status %}checked{% endif %} onchange="submitForm('{{ task.id }}')">
                                         </span>
                                     </div>
                                     <label>{{ task.title }}</label>

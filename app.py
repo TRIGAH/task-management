@@ -82,11 +82,10 @@ def update_task():
     tasks= db.session.query(Task).all()
     for task in tasks:
         if task.id == task_id:
+            print(task.id)
             task.status = True # Toggle task completion status
             break
     return jsonify({'message': 'Task updated successfully'})
-
-
 
 
 if __name__=='__main__':
