@@ -86,16 +86,6 @@ def update_task():
             break
     return jsonify({'message': 'Task updated successfully'})
 
-# @app.route('/status', methods = ['GET','PATCH'])
-# def mark_task(task_id):
-#     task_status = request.form.get('status',False)
-#     task = Task.query.get(task_id)
-#     if task:
-#         task.status = task_status
-#         db.session.commit()
-#         return jsonify(respose={"success":"Task Completed"})    
-#     else:
-#         return jsonify(error={"Not Found":"Sorry a Task with that id was not found in the database"}), 404
 
 
 
