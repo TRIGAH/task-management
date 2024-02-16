@@ -60,13 +60,13 @@ def task_complete():
 
 
 # Route to display tasks and update them
-@app.route('/tasks', methods=['GET', 'POST'])
+@app.route('/tasks/<task_id>', methods=['GET', 'POST'])
 def task_list(task_id):
     if request.method == 'POST':
         tasks= db.session.query(Task).all()
 
         for task in tasks:
-            if task.id == task_id:
+            if task.id == int(task_id):
                 print(f"------{task_id}......")
                 task.status = True  # Update task as completed
                 db.session.commit()
